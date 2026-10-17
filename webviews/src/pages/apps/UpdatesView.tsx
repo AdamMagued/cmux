@@ -31,14 +31,14 @@ export function UpdatesView({ snap, store, strings }: { snap: AppsSnapshot; stor
         </button>
       </div>
       {snap.updatesError && (
-        <div className="apps-updates-status" role="status">
+        <output className="apps-updates-status">
           <span className="apps-failure selectable">
             {snap.updatesStale ? t("store.updates.stale") : snap.updatesError}
           </span>
           <button type="button" className="apps-button" onClick={() => void store.refreshUpdates()}>
             {t("store.action.retry")}
           </button>
-        </div>
+        </output>
       )}
       {updates.length > 0 && (
         <div className="apps-updates-list">
