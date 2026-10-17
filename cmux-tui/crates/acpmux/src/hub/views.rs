@@ -1,6 +1,7 @@
 //! Part of `Hub`; see `hub/mod.rs`.
 
 use super::*;
+use crate::session_identity::{LOCAL_HOST_ID, SessionReceipt};
 
 /// The session's status dot, decided here once so every client draws the
 /// same one (cx-zlox). First match wins:
@@ -161,8 +162,16 @@ impl Hub {
     pub fn session_summary(&self, session: &Session) -> Value {
         let m = session.meta();
         let turn = session.turn();
+        let receipt = SessionReceipt::new(
+            LOCAL_HOST_ID,
+            m.id.clone(),
+            m.agent_session_id.clone(),
+            self.started_at,
+        );
         let mut summary = json!({
             "sessionId": m.id,
+            "qualifiedSessionId": receipt.qualified_id(),
+            "sessionReceipt": receipt.to_value(),
             "name": m.name,
             "harness": m.harness,
             "family": m.family,
